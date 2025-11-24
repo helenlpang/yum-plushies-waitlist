@@ -9,9 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailError = document.getElementById('email-error');
     const successMessage = document.getElementById('success-message');
     
-    // Step indicators
-    const stepIndicators = document.querySelectorAll('.step');
-    
     // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
@@ -121,13 +118,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show step 2 form
         preferencesForm.style.display = 'flex';
         
-        // Update step indicators
-        stepIndicators.forEach(step => {
-            if (step.dataset.step === '2') {
-                step.classList.add('active');
-            }
-        });
-        
         // Store email in hidden field
         emailHidden.value = userEmail;
         
@@ -173,7 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Show final success message
                 preferencesForm.style.display = 'none';
-                document.querySelector('.step-indicator').style.display = 'none';
                 successMessage.classList.remove('hidden');
             } else {
                 throw new Error('Form submission failed');
@@ -194,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const skipButton = document.querySelector('.skip-button');
     skipButton.addEventListener('click', function() {
         preferencesForm.style.display = 'none';
-        document.querySelector('.step-indicator').style.display = 'none';
         successMessage.classList.remove('hidden');
     });
 
