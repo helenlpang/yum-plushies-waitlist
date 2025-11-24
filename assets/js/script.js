@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add interactive hover effects to plushie cards
     const plushieCards = document.querySelectorAll('.plushie-card');
-    const checkboxes = document.querySelectorAll('input[name="favorite-plushies[]"]');
+    const checkboxes = document.querySelectorAll('input[name="favorite-plushies"]');
 
     plushieCards.forEach(card => {
         card.addEventListener('click', function() {
