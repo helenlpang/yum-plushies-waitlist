@@ -1,52 +1,24 @@
-// Yum Plushies Waitlist Form Handler
+// Yum Plushies Waitlist Form Handler - Two Step Process
 
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('waitlist-form');
+    // Form elements
+    const emailForm = document.getElementById('email-form');
+    const preferencesForm = document.getElementById('preferences-form');
     const emailInput = document.getElementById('email');
+    const emailHidden = document.getElementById('email-hidden');
     const emailError = document.getElementById('email-error');
     const successMessage = document.getElementById('success-message');
-    const submitButton = form.querySelector('.cta-button');
-    const buttonText = submitButton.querySelector('.button-text');
-    const buttonLoader = submitButton.querySelector('.button-loader');
-
+    
+    // Step indicators
+    const stepIndicators = document.querySelectorAll('.step');
+    
     // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    let userEmail = '';
 
-    // Add interactive hover effects to plushie cards
-    const plushieCards = document.querySelectorAll('.plushie-card');
-    const checkboxes = document.querySelectorAll('.plushie-checkbox');
-
-    plushieCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const plushieId = this.dataset.plushie;
-            
-            // Find corresponding checkbox and toggle it
-            const checkbox = Array.from(checkboxes).find(cb => cb.dataset.value === plushieId);
-            if (checkbox) {
-                checkbox.checked = !checkbox.checked;
-            }
-            
-            // Visual feedback
-            plushieCards.forEach(c => c.classList.remove('selected'));
-            this.classList.add('selected');
-            
-            // Smooth scroll to form
-            document.querySelector('.waitlist-section').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'center'
-            });
-            
-            // Highlight the checkbox briefly
-            if (checkbox) {
-                const checkboxLabel = checkbox.closest('.checkbox-label');
-                checkboxLabel.style.transform = 'translateX(8px) scale(1.02)';
-                setTimeout(() => {
-                    checkboxLabel.style.transform = '';
-                }, 500);
-            }
-        });
-    });
-
+    // ========== STEP 1: EMAIL FORM ==========
+    
     // Real-time email validation
     emailInput.addEventListener('blur', function() {
         validateEmail();
@@ -87,8 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
         emailInput.classList.remove('error');
     }
 
-    // Form submission handler for Netlify Forms
-    form.addEventListener('submit', async function(e) {
+    // Step 1: Email form submission
+    emailForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // Validate email
@@ -97,26 +69,22 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        const submitButton = emailForm.querySelector('.cta-button');
+        const buttonText = submitButton.querySelector('.button-text');
+        const buttonLoader = submitButton.querySelector('.button-loader');
+
         // Disable submit button and show loader
         submitButton.disabled = true;
         buttonText.style.display = 'none';
         buttonLoader.style.display = 'inline';
 
-        // Submit form to Netlify
+        // Submit email to Netlify
         try {
-            // Get all checked plushies
-            const selectedPlushies = Array.from(document.querySelectorAll('.plushie-checkbox:checked'))
-                .map(cb => cb.dataset.value)
-                .join(', ');
+            userEmail = emailInput.value.trim();
             
-            // Update the hidden field with selected plushies
-            document.querySelector('input[name="favorite-plushies"]').value = selectedPlushies || 'none';
-            
-            // Build form data manually to handle checkboxes properly
             const formData = new URLSearchParams();
-            formData.append('form-name', 'waitlist');
-            formData.append('email', emailInput.value.trim());
-            formData.append('favorite-plushies', selectedPlushies || 'none');
+            formData.append('form-name', 'waitlist-email');
+            formData.append('email', userEmail);
             
             const response = await fetch('/', {
                 method: 'POST',
@@ -125,11 +93,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (response.ok) {
-                // Show success message
-                form.style.display = 'none';
-                successMessage.classList.remove('hidden');
+                console.log('Step 1: Email submitted successfully!');
                 
-                console.log('Successfully submitted to Netlify Forms!');
+                // Move to step 2
+                showStep2();
             } else {
                 throw new Error('Form submission failed');
             }
@@ -145,6 +112,130 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // ========== STEP 2: PREFERENCES FORM ==========
+    
+    function showStep2() {
+        // Hide step 1 form
+        emailForm.style.display = 'none';
+        
+        // Show step 2 form
+        preferencesForm.style.display = 'flex';
+        
+        // Update step indicators
+        stepIndicators.forEach(step => {
+            if (step.dataset.step === '2') {
+                step.classList.add('active');
+            }
+        });
+        
+        // Store email in hidden field
+        emailHidden.value = userEmail;
+        
+        // Scroll to form
+        document.querySelector('.waitlist-section').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'center'
+        });
+    }
+
+    // Step 2: Preferences form submission
+    preferencesForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitButton = preferencesForm.querySelector('.cta-button');
+        const buttonText = submitButton.querySelector('.button-text');
+        const buttonLoader = submitButton.querySelector('.button-loader');
+
+        // Disable submit button and show loader
+        submitButton.disabled = true;
+        buttonText.style.display = 'none';
+        buttonLoader.style.display = 'inline';
+
+        // Submit preferences to Netlify
+        try {
+            const selectedPlushies = Array.from(document.querySelectorAll('.plushie-checkbox:checked'))
+                .map(cb => cb.dataset.value)
+                .join(', ');
+            
+            const formData = new URLSearchParams();
+            formData.append('form-name', 'waitlist-preferences');
+            formData.append('email', userEmail);
+            formData.append('favorite-plushies', selectedPlushies || 'none');
+            
+            const response = await fetch('/', {
+                method: 'POST',
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: formData.toString()
+            });
+
+            if (response.ok) {
+                console.log('Step 2: Preferences submitted successfully!');
+                
+                // Show final success message
+                preferencesForm.style.display = 'none';
+                document.querySelector('.step-indicator').style.display = 'none';
+                successMessage.classList.remove('hidden');
+            } else {
+                throw new Error('Form submission failed');
+            }
+            
+        } catch (error) {
+            console.error('Submission error:', error);
+            alert('Oops! Something went wrong. Please try again.');
+            
+            // Re-enable button
+            submitButton.disabled = false;
+            buttonText.style.display = 'inline';
+            buttonLoader.style.display = 'none';
+        }
+    });
+
+    // Skip button handler
+    const skipButton = document.querySelector('.skip-button');
+    skipButton.addEventListener('click', function() {
+        preferencesForm.style.display = 'none';
+        document.querySelector('.step-indicator').style.display = 'none';
+        successMessage.classList.remove('hidden');
+    });
+
+    // ========== PLUSHIE CARD INTERACTIONS ==========
+    
+    const plushieCards = document.querySelectorAll('.plushie-card');
+    const checkboxes = document.querySelectorAll('.plushie-checkbox');
+
+    plushieCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const plushieId = this.dataset.plushie;
+            
+            // Find corresponding checkbox and toggle it (only if step 2 is visible)
+            if (preferencesForm.style.display !== 'none') {
+                const checkbox = Array.from(checkboxes).find(cb => cb.dataset.value === plushieId);
+                if (checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                    
+                    // Highlight the checkbox briefly
+                    const checkboxLabel = checkbox.closest('.checkbox-label');
+                    checkboxLabel.style.transform = 'translateX(8px) scale(1.02)';
+                    setTimeout(() => {
+                        checkboxLabel.style.transform = '';
+                    }, 500);
+                }
+            }
+            
+            // Visual feedback
+            plushieCards.forEach(c => c.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            // Smooth scroll to form
+            document.querySelector('.waitlist-section').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        });
+    });
+
+    // ========== VISUAL ENHANCEMENTS ==========
+    
     // Add subtle animation to form elements on load
     const formElements = document.querySelectorAll('.form-group');
     formElements.forEach((element, index) => {
@@ -156,12 +247,9 @@ document.addEventListener('DOMContentLoaded', function() {
             element.style.transform = 'translateY(0)';
         }, index * 100);
     });
-});
 
-// Add visual feedback for form interactions
-document.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('input, select');
-    
+    // Add visual feedback for form interactions
+    const inputs = document.querySelectorAll('input[type="email"]');
     inputs.forEach(input => {
         input.addEventListener('focus', function() {
             this.parentElement.style.transform = 'scale(1.02)';
@@ -173,6 +261,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-// Optional: Add confetti or celebration effect on successful submission
-// Uncomment and add a confetti library like canvas-confetti if desired

@@ -30,13 +30,24 @@
                 <h3>Join the Waitlist</h3>
                 <p class="form-intro">Be the first to know when our plushies launch!</p>
                 
-                <form id="waitlist-form" class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-                    <!-- Hidden field for Netlify Forms -->
-                    <input type="hidden" name="form-name" value="waitlist">
-                    
-                    <!-- Honeypot field for spam protection (hidden from users) -->
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Email</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Preferences</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Email Form -->
+                <form id="email-form" class="waitlist-form step-1-form" name="waitlist-email" method="POST" data-netlify="true" netlify-honeypot="bot-field-1">
+                    <input type="hidden" name="form-name" value="waitlist-email">
                     <p style="display: none;">
-                        <label>Don't fill this out if you're human: <input name="bot-field"></label>
+                        <label>Don't fill this out: <input name="bot-field-1"></label>
                     </p>
 
                     <div class="form-group">
@@ -52,9 +63,27 @@
                         <span class="error-message" id="email-error"></span>
                     </div>
 
+                    <button type="submit" class="cta-button">
+                        <span class="button-text">Join Waitlist! 🎉</span>
+                        <span class="button-loader" style="display: none;">⏳</span>
+                    </button>
+                </form>
+
+                <!-- Step 2: Preferences Form (hidden initially) -->
+                <form id="preferences-form" class="waitlist-form step-2-form" name="waitlist-preferences" method="POST" data-netlify="true" netlify-honeypot="bot-field-2" style="display: none;">
+                    <input type="hidden" name="form-name" value="waitlist-preferences">
+                    <input type="hidden" name="email" id="email-hidden" value="">
+                    <p style="display: none;">
+                        <label>Don't fill this out: <input name="bot-field-2"></label>
+                    </p>
+
+                    <div class="step-2-intro">
+                        <p class="success-emoji">✅</p>
+                        <p class="success-text">You're on the list! Now, help us out...</p>
+                    </div>
+
                     <div class="form-group">
                         <label>Which plushies are you most excited about? <span class="optional">(Optional - select all that apply)</span></label>
-                        <!-- Hidden field to store selected plushies for Netlify -->
                         <input type="hidden" name="favorite-plushies" value="">
                         <div class="checkbox-group">
                             <label class="checkbox-label">
@@ -76,16 +105,19 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="cta-button">
-                        <span class="button-text">Notify Me! 🎉</span>
-                        <span class="button-loader" style="display: none;">⏳</span>
-                    </button>
+                    <div class="button-group">
+                        <button type="submit" class="cta-button">
+                            <span class="button-text">Submit Preferences 💖</span>
+                            <span class="button-loader" style="display: none;">⏳</span>
+                        </button>
+                        <button type="button" class="skip-button">Skip this step</button>
+                    </div>
                 </form>
 
                 <div id="success-message" class="success-message hidden">
                     <div class="success-icon">✨</div>
-                    <h4>You're on the list!</h4>
-                    <p>Thanks for joining! We'll let you know as soon as our plushies are ready. 🥟💕</p>
+                    <h4>Thank you!</h4>
+                    <p>We appreciate your feedback! We'll notify you as soon as our plushies are ready. 🥟💕</p>
                 </div>
             </div>
         </section>
