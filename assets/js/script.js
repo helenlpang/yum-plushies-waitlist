@@ -14,14 +14,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add interactive hover effects to plushie cards
     const plushieCards = document.querySelectorAll('.plushie-card');
-    const checkboxes = document.querySelectorAll('input[name="favorite-plushies"]');
+    const checkboxes = document.querySelectorAll('.plushie-checkbox');
 
     plushieCards.forEach(card => {
         card.addEventListener('click', function() {
             const plushieId = this.dataset.plushie;
             
             // Find corresponding checkbox and toggle it
-            const checkbox = Array.from(checkboxes).find(cb => cb.value === plushieId);
+            const checkbox = Array.from(checkboxes).find(cb => cb.dataset.value === plushieId);
             if (checkbox) {
                 checkbox.checked = !checkbox.checked;
             }
@@ -104,12 +104,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Submit form to Netlify
         try {
-            const formData = new FormData(form);
+            // Get all checked plushies
+            const selectedPlushies = Array.from(document.querySelectorAll('.plushie-checkbox:checked'))
+                .map(cb => cb.dataset.value)
+                .join(', ');
+            
+            // Update the hidden field with selected plushies
+            document.querySelector('input[name="favorite-plushies"]').value = selectedPlushies || 'none';
+            
+            // Build form data manually to handle checkboxes properly
+            const formData = new URLSearchParams();
+            formData.append('form-name', 'waitlist');
+            formData.append('email', emailInput.value.trim());
+            formData.append('favorite-plushies', selectedPlushies || 'none');
             
             const response = await fetch('/', {
                 method: 'POST',
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: new URLSearchParams(formData).toString()
+                body: formData.toString()
             });
 
             if (response.ok) {

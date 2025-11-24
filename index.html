@@ -54,21 +54,23 @@
 
                     <div class="form-group">
                         <label>Which plushies are you most excited about? <span class="optional">(Optional - select all that apply)</span></label>
+                        <!-- Hidden field to store selected plushies for Netlify -->
+                        <input type="hidden" name="favorite-plushies" value="">
                         <div class="checkbox-group">
                             <label class="checkbox-label">
-                                <input type="checkbox" name="favorite-plushies" value="tofu">
+                                <input type="checkbox" class="plushie-checkbox" data-value="tofu">
                                 <span class="checkbox-text">Silky the Tofu Cube</span>
                             </label>
                             <label class="checkbox-label">
-                                <input type="checkbox" name="favorite-plushies" value="spicy-tofu">
+                                <input type="checkbox" class="plushie-checkbox" data-value="spicy-tofu">
                                 <span class="checkbox-text">Stinky the Stinky Tofu Cube</span>
                             </label>
                             <label class="checkbox-label">
-                                <input type="checkbox" name="favorite-plushies" value="lychee">
+                                <input type="checkbox" class="plushie-checkbox" data-value="lychee">
                                 <span class="checkbox-text">Lyam the Lychee</span>
                             </label>
                             <label class="checkbox-label">
-                                <input type="checkbox" name="favorite-plushies" value="rambutan">
+                                <input type="checkbox" class="plushie-checkbox" data-value="rambutan">
                                 <span class="checkbox-text">Rory the Rambutan</span>
                             </label>
                         </div>
