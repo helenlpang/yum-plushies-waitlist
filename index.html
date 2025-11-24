@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Join the Yum Plushies waitlist! Adorable food-themed stuffed animals coming soon. Foods are Friends!">
+    <title>Yum Plushies - Foods are Friends | Join the Waitlist</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="assets/images/logo.jpg" alt="Yum Plushies Logo" class="logo">
+            <h1>Yum Plushies</h1>
+            <p class="tagline">Foods are Friends</p>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>🥰 Get Ready for the Cuteness!</h2>
+            <p>Our adorable food friends are coming soon. Join the waitlist to be the first to know when they launch!</p>
+        </section>
+
+        <section class="waitlist-section">
+            <div class="waitlist-container">
+                <h3>Join the Waitlist</h3>
+                <p class="form-intro">Be the first to know when our plushies launch!</p>
+                
+                <form id="waitlist-form" class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                    <!-- Hidden field for Netlify Forms -->
+                    <input type="hidden" name="form-name" value="waitlist">
+                    
+                    <!-- Honeypot field for spam protection (hidden from users) -->
+                    <p style="display: none;">
+                        <label>Don't fill this out if you're human: <input name="bot-field"></label>
+                    </p>
+
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="your.email@example.com" 
+                            required 
+                            aria-required="true"
+                        >
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Which plushies are you most excited about? <span class="optional">(Optional - select all that apply)</span></label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="favorite-plushies[]" value="tofu">
+                                <span class="checkbox-text">Silky the Tofu Cube</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="favorite-plushies[]" value="spicy-tofu">
+                                <span class="checkbox-text">Stinky the Stinky Tofu Cube</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="favorite-plushies[]" value="lychee">
+                                <span class="checkbox-text">Lyam the Lychee</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="favorite-plushies[]" value="rambutan">
+                                <span class="checkbox-text">Rory the Rambutan</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="cta-button">
+                        <span class="button-text">Notify Me! 🎉</span>
+                        <span class="button-loader" style="display: none;">⏳</span>
+                    </button>
+                </form>
+
+                <div id="success-message" class="success-message hidden">
+                    <div class="success-icon">✨</div>
+                    <h4>You're on the list!</h4>
+                    <p>Thanks for joining! We'll let you know as soon as our plushies are ready. 🥟💕</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="plushies-showcase">
+            <h3>Meet the Squad</h3>
+            <div class="plushies-grid">
+                <div class="plushie-card" data-plushie="tofu">
+                    <div class="img-wrapper">
+                        <img src="assets/images/plushie1.png" alt="Tofu Cube Plushie" loading="lazy">
+                    </div>
+                    <h4>Silky the Tofu Cube</h4>
+                    <p class="plushie-desc">Soft, squishy, and always smiling!</p>
+                </div>
+                <div class="plushie-card" data-plushie="spicy-tofu">
+                    <div class="img-wrapper">
+                        <img src="assets/images/plushie2.png" alt="Spicy Tofu Plushie" loading="lazy">
+                    </div>
+                    <h4>Stinky the Stinky Tofu Cube</h4>
+                    <p class="plushie-desc">A little spicy, a lot of fun!</p>
+                </div>
+                <div class="plushie-card" data-plushie="lychee">
+                    <div class="img-wrapper">
+                        <img src="assets/images/plushie3.png" alt="Lychee Plushie" loading="lazy">
+                    </div>
+                    <h4>Lyam the Lychee</h4>
+                    <p class="plushie-desc">Sweet and snuggly!</p>
+                </div>
+                <div class="plushie-card" data-plushie="rambutan">
+                    <div class="img-wrapper">
+                        <img src="assets/images/plushie4.png" alt="Rambutan Plushie" loading="lazy">
+                    </div>
+                    <h4>Rory the Rambutan</h4>
+                    <p class="plushie-desc">Fluffy hair, don't care!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Yum Plushies. All rights reserved. Made with 💖 for plushie lovers everywhere.</p>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
