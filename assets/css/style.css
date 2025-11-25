@@ -299,6 +299,36 @@ main {
     text-shadow: 2px 2px 0px rgba(255, 183, 178, 0.2);
 }
 
+.waitlist-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.spin-emoji {
+    display: inline-block;
+    font-size: 2rem;
+    animation: spin 3s linear infinite;
+}
+
+.spin-emoji-left {
+    animation-direction: normal;
+}
+
+.spin-emoji-right {
+    animation-direction: reverse;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .form-intro {
     text-align: center;
     color: var(--text-light);
